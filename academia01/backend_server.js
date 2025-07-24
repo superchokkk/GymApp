@@ -9,7 +9,7 @@ const requiredEnvVars = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_DATABASE', 'SERVER
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
 if (missingEnvVars.length > 0) {
-  console.error('❌ Variáveis de ambiente obrigatórias não definidas:', missingEnvVars);
+  console.error('Variáveis de ambiente obrigatórias não definidas:', missingEnvVars);
   console.error('Por favor, configure o arquivo .env com as variáveis necessárias.');
   process.exit(1);
 }
