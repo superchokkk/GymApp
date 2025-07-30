@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-import '../../commons/imports.dart';
-import '../../features/pessoas/alunos/services/alunoService.dart';
+import 'imports.dart';
 
-class askCpf extends StatefulWidget {
-  const askCpf({super.key});
+class AskCpf extends StatefulWidget {
+  const AskCpf({super.key});
 
   @override
-  State<askCpf> createState() => _askCpfState();
+  State<AskCpf> createState() => _AskCpfState();
 }
 
-class _askCpfState extends State<askCpf> {
+class _AskCpfState extends State<AskCpf> {
   String userCpf = "";
   bool isLoading = false;
 
@@ -20,8 +18,6 @@ class _askCpfState extends State<askCpf> {
       );
       return;
     }
-
-    // Remove formatação do CPF (pontos, hífens, etc.)
     String cpfLimpo = userCpf.replaceAll(RegExp(r'[^0-9]'), '');
 
     if (cpfLimpo.length != 11) {
@@ -33,35 +29,83 @@ class _askCpfState extends State<askCpf> {
     });
 
     try {
-      final aluno = await AlunoService.buscarAlunoPorCpf(cpfLimpo);
+      final cliente = await PessoaService.buscarPessoaPorCpf(cpfLimpo);
 
-      if (aluno != null) {
-        print('Nome do aluno encontrado: ${aluno.nivel}');
+      if (!mounted) return;
 
-        // Mostrar mensagem de sucesso
+      if (cliente == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Aluno encontrado: ${aluno.nome}')),
+          const SnackBar(content: Text('Usuário não encontrado')),
+        );
+        return;
+      }
+
+      // Instancia o objeto específico baseado no nível
+      late Pessoa user;
+      
+      if (cliente.nivel == NivelUsuario.admin) {
+        user = Pessoa(
+          id: cliente.id,
+          nome: cliente.nome,
+          idade: cliente.idade,
+          email: cliente.email,
+          cpf: cliente.cpf,
+          senha: cliente.senha,
+          nivel: cliente.nivel,
+        );
+      } else if (cliente.nivel == NivelUsuario.professor) {
+        user = Funcionario(
+          id: cliente.id,
+          nome: cliente.nome,
+          idade: cliente.idade,
+          email: cliente.email,
+          cpf: cliente.cpf,
+          senha: cliente.senha,
+          nivel: cliente.nivel,
+          idFuncao: cliente.idFuncao,
+          salario: cliente.salario,
         );
       } else {
-        print('Aluno não encontrado para o CPF: $userCpf');
+          user = Aluno(
+            id: cliente.id,
+            nome: cliente.nome,
+            idade: cliente.idade,
+            email: cliente.email,
+            cpf: cliente.cpf,
+            senha: cliente.senha,
+            nivel: cliente.nivel,
+            idAcademia: cliente.idAcademia,
+          );
+        }
+      
 
-        // Mostrar mensagem de erro
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Aluno não encontrado')));
-      }
+      // Agora user contém a instância específica do tipo correto
+      print('Usuário instanciado: ${user.runtimeType} - ${user.nome}');
+      
+      if (!mounted) return;
+      
+      //mudar tela (senha, levando o user)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AskSenha(),
+        ),
+      );
+
     } catch (e) {
-      print('Erro ao buscar aluno: $e');
-
+      if (!mounted) return;
+      
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Erro ao buscar aluno. Verifique sua conexão.'),
+          content: Text('Erro ao buscar cliente. Verifique sua conexão.'),
         ),
       );
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -73,13 +117,13 @@ class _askCpfState extends State<askCpf> {
     double cellWidth = screenWidth / 12;
     double cellHeight = screenHeight / 20;
 
-    Color corPergunta = colorConst.first;
+    Color corPergunta = ColorConst.first;
 
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: colorConst.second,
+        color: ColorConst.second,
         child: SafeArea(
           child: Stack(
             children: [
@@ -90,7 +134,7 @@ class _askCpfState extends State<askCpf> {
                 height: cellHeight * 4,
                 child: Center(
                   child: Image.asset(
-                    images.logo,
+                    Images.logo,
                     width: cellWidth * 4,
                     height: cellHeight * 4,
                     fit: BoxFit.contain,
@@ -104,7 +148,7 @@ class _askCpfState extends State<askCpf> {
                 width: cellWidth * 8,
                 height: cellHeight * 2,
                 child: Center(
-                  child: caixaPergunta(
+                  child: CaixaPergunta(
                     key: ValueKey(corPergunta),
                     cor: corPergunta,
                     onValueChanged: (valor) {
@@ -114,7 +158,7 @@ class _askCpfState extends State<askCpf> {
                       });
                     },
                     labelText: 'cpf',
-                    validador: cpfUtils.isValidCpf,
+                    validador: CpfUtils.isValidCpf,
                   ),
                 ),
               ),
@@ -127,29 +171,29 @@ class _askCpfState extends State<askCpf> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : onPressed,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: colorConst.first,
+                    backgroundColor: ColorConst.first,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   child:
                       isLoading
-                          ? CircularProgressIndicator(color: colorConst.third)
+                          ? CircularProgressIndicator(color: ColorConst.third)
                           : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 Icons.fitness_center,
-                                color: colorConst.third,
+                                color: ColorConst.third,
                               ),
                               SizedBox(width: 10),
                               Text(
                                 "Continuar",
-                                style: TextStyle(color: colorConst.third),
+                                style: TextStyle(color: ColorConst.third),
                               ),
                               Icon(
                                 Icons.fitness_center,
-                                color: colorConst.third,
+                                color: ColorConst.third,
                               ),
                             ],
                           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'views/splashPage.dart';
+import 'views/splash_page.dart';
 
 Future<void> main() async {
   // Garantir que o Flutter está inicializado
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),*/
       debugShowCheckedModeBanner: false,
-      home: const splashpage(),
+      home: const SplashPage(),
     );
   }
 }

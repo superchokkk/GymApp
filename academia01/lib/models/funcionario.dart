@@ -1,20 +1,19 @@
 import 'package:academia01/features/pessoas/model/pessoa.dart';
 
 class Funcionario extends Pessoa {
-  final String cargo;
-  final double salario;
 
   Funcionario({
-    required int id,
-    required String nome,
-    required int idade,
-    required String email,
-    required String cpf,
-    required String senha,
-    required this.cargo,
-    required this.salario,
-  }) : super(id: id, nome: nome, idade: idade, email: email, cpf: cpf, senha: senha);
-
+    required super.id,
+    required super.nome,
+    required super.idade,
+    required super.email,
+    required super.cpf,
+    required super.senha,
+    required super.nivel,
+    required super.idFuncao,
+    required super.salario,
+  });
+  
   factory Funcionario.fromJson(Map<String, dynamic> json) {
     return Funcionario(
       id: json['id'],
@@ -23,11 +22,13 @@ class Funcionario extends Pessoa {
       email: json['email'],
       cpf: json['cpf'],
       senha: json['senha'],
-      cargo: json['cargo'],
+      nivel: json['nivel'] != null ? NivelUsuario.fromString(json['nivel']) : NivelUsuario.user,
+      idFuncao: json['idFuncao'],
       salario: json['salario'].toDouble(),
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -36,7 +37,8 @@ class Funcionario extends Pessoa {
       'email': email,
       'cpf': cpf,
       'senha': senha,
-      'cargo': cargo,
+      'nivel': nivel.value,
+      'idFuncao': idFuncao,
       'salario': salario,
     };
   }

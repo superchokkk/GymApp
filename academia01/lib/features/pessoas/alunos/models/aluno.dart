@@ -1,18 +1,17 @@
 import 'package:academia01/features/pessoas/model/pessoa.dart';
 
 class Aluno extends Pessoa{
-  final int idAcademia;
 
   Aluno({
-    required int id,
-    required String nome,
-    required int idade,
-    required String email,
-    required String cpf,
-    required String senha,
-    required NivelUsuario? nivel,
-    required this.idAcademia,
-  }) : super(id: id, nome: nome, idade: idade, email: email, cpf: cpf, senha: senha, nivel: nivel ?? NivelUsuario.user);
+    required super.id,
+    required super.nome,
+    required super.idade,
+    required super.email,
+    required super.cpf,
+    required super.senha,
+    super.nivel = NivelUsuario.user,
+    required super.idAcademia,
+  });
 
   factory Aluno.fromJson(Map<String, dynamic> json) {
     return Aluno(
@@ -27,6 +26,7 @@ class Aluno extends Pessoa{
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,

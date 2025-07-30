@@ -1,7 +1,7 @@
 enum NivelUsuario {
   admin('ADMIN'),
   user('USER'),
-  professor('PROFESSOR');
+  professor('PROF');
 
   const NivelUsuario(this.value);
   final String value;
@@ -28,6 +28,9 @@ class Pessoa {
   final String cpf;
   final String senha;
   final NivelUsuario nivel;
+  final int idAcademia;
+  final int idFuncao;
+  final double salario;
 
   Pessoa({
     required this.id, 
@@ -36,9 +39,12 @@ class Pessoa {
     required this.email, 
     required this.cpf, 
     required this.senha,
-    this.nivel = NivelUsuario.user
+    required this.nivel,
+    this.idAcademia = 0,
+    this.idFuncao = 0,
+    this.salario = 0,
   });
-
+  
   factory Pessoa.fromJson(Map<String, dynamic> json) {
     return Pessoa(
       id: json['id'],
@@ -48,6 +54,9 @@ class Pessoa {
       cpf: json['cpf'],
       senha: json['senha'],
       nivel: json['nivel'] != null ? NivelUsuario.fromString(json['nivel']) : NivelUsuario.user,
+      idAcademia: json['idAcademia'] ?? 0,
+      idFuncao: json['idFuncao'] ?? 0,
+      salario: json['salario'] ?? 0.0,
     );
   }
 
@@ -60,6 +69,9 @@ class Pessoa {
       'cpf': cpf,
       'senha': senha,
       'nivel': nivel.value,
+      'idAcademia': idAcademia,
+      'idFuncao': idFuncao,
+      'salario': salario,
     };
   }
 }

@@ -1,8 +1,8 @@
 import 'package:academia01/features/pessoas/model/pessoa.dart';
 
-class Aluno extends Pessoa{
+class Funcionario extends Pessoa{
 
-  Aluno({
+  Funcionario({
     required super.id,
     required super.nome,
     required super.idade,
@@ -10,19 +10,21 @@ class Aluno extends Pessoa{
     required super.cpf,
     required super.senha,
     required super.nivel,
-    required super.idAcademia,
+    required super.idFuncao,
+    required super.salario,
   });
 
-  factory Aluno.fromJson(Map<String, dynamic> json) {
-    return Aluno(
+  factory Funcionario.fromJson(Map<String, dynamic> json) {
+    return Funcionario(
       id: json['id'],
       nome: json['nome'],
       idade: json['idade'],
       email: json['email'],
       cpf: json['cpf'],
       senha: json['senha'] ?? '',
-      idAcademia: json['idAcademia'],
-      nivel: json['nivel'] != null ? NivelUsuario.fromString(json['nivel']) : NivelUsuario.user
+      nivel: json['nivel'] != null ? NivelUsuario.fromString(json['nivel']) : NivelUsuario.user,
+      idFuncao: json['idFuncao'],
+      salario: json['salario'].toDouble(),
     );
   }
 
@@ -35,7 +37,8 @@ class Aluno extends Pessoa{
       'email': email,
       'cpf': cpf,
       'senha': senha,
-      'idAcademia': idAcademia,
+      'idFuncao': idFuncao,
+      'salario': salario,
     };
   }
 }

@@ -35,6 +35,107 @@ db.connect((err) => {
   console.log('Conectado ao MySQL!');
 });
 
+//Obtem usuario e identifica nivel
+app.get('/api/cliente/cpf/:cpf', (req, res) => {
+  const cpf = req.params.cpf;
+
+  // Querys
+  const query = `
+    SELECT id, nome, idade, email, cpf, senha, nivel
+    FROM pessoas
+    WHERE cpf = ?
+  `;
+  
+  const queryAluno = `
+    SELECT a.idAcademia
+    FROM pessoas as b 
+    INNER JOIN alunos as a ON b.id = a.id
+    WHERE b.cpf = ?
+  `;
+  
+  const queryProfessor = `
+    SELECT a.idfuncao, a.idSalario
+    FROM pessoas as b 
+    INNER JOIN funcionarios as a ON b.id = a.id
+    WHERE b.cpf = ?
+  `;
+
+  db.query(query, [cpf], (err, results) => {
+    if (err) {
+      console.error('Erro na query:', err);
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Cliente não encontrado' });
+    }
+
+    const cliente = results[0];
+    
+    //verificacao dos niveis
+    if (cliente.nivel === 'USER') {
+      db.query(queryAluno, [cpf], (err, alunoResults) => {
+        if (err) {
+          console.error('Erro na query do aluno:', err);
+          return res.status(500).json({ error: err.message });
+        }
+        
+        const aluno = alunoResults.length > 0 ? alunoResults[0] : {};
+        
+        res.json({
+          id: cliente.id,
+          nome: cliente.nome,
+          idade: cliente.idade,
+          email: cliente.email,
+          cpf: cliente.cpf,
+          senha: cliente.senha,
+          nivel: cliente.nivel,
+          idAcademia: aluno.idAcademia,
+          idfuncao: null,
+          salario: null
+        });
+      });
+      
+    } else if (cliente.nivel === 'PROF') {
+      db.query(queryProfessor, [cpf], (err, professorResults) => {
+        if (err) {
+          console.error('Erro na query do funcionário:', err);
+          return res.status(500).json({ error: err.message });
+        }
+        
+        const professor = professorResults.length > 0 ? professorResults[0] : {};
+        
+        res.json({
+          id: cliente.id,
+          nome: cliente.nome,
+          idade: cliente.idade,
+          email: cliente.email,
+          cpf: cliente.cpf,
+          senha: cliente.senha,
+          nivel: cliente.nivel,
+          idAcademia: null,
+          idfuncao: professor.idfuncao || null,
+          salario: professor.salario || null
+        });
+      });
+      
+    } else {
+      res.json({
+        id: cliente.id,
+        nome: cliente.nome,
+        idade: cliente.idade,
+        email: cliente.email,
+        cpf: cliente.cpf,
+        senha: cliente.senha,
+        nivel: cliente.nivel,
+        idAcademia: null,
+        idfuncao: null,
+        salario: null
+      });
+    }
+  });
+});
+
 // GET /api/aluno/cpf/:cpf - Buscar aluno por CPF
 app.get('/api/aluno/cpf/:cpf', (req, res) => {
   const cpf = req.params.cpf;
@@ -45,15 +146,15 @@ app.get('/api/aluno/cpf/:cpf', (req, res) => {
     INNER JOIN alunos as b ON a.id = b.id
     WHERE a.cpf = ?
   `;
-  
+
   db.query(query, [cpf], (err, results) => {
     if (err) {
       console.error('Erro na query:', err);
-      return res.status(500).json({error: err.message});
+      return res.status(500).json({ error: err.message });
     }
-    
+
     if (results.length === 0) {
-      return res.status(404).json({message: 'Aluno não encontrado'});
+      return res.status(404).json({ message: 'Aluno não encontrado' });
     }
 
     const aluno = results[0];
@@ -73,7 +174,7 @@ app.get('/api/aluno/cpf/:cpf', (req, res) => {
 // GET /api/academias
 app.get('/api/academias', (req, res) => {
   db.query('SELECT * FROM academias', (err, results) => {
-    if (err) return res.status(500).json({error: err.message});
+    if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
 });

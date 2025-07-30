@@ -118,4 +118,4 @@ Este projeto segue as melhores práticas de desenvolvimento Flutter:
 
 ## 📄 Licença
 
-Este projeto é desenvolvido para fins acadêmicos.
+Este projeto é desenvolvido para fins acadêmicos por Samuel Spricigo.

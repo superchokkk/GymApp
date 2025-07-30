@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-class caixaPergunta extends StatefulWidget {
+class CaixaPergunta extends StatefulWidget {
   final Color cor;
   final void Function(String) onValueChanged;
   final String labelText;
   final bool Function(String) validador;
 
-  const caixaPergunta({
-    Key? key,
+  const CaixaPergunta({
+    super.key,
     required this.cor,
     required this.onValueChanged,
     required this.labelText,
     required this.validador,
-  }) : super(key: key);
+  });
 
   @override
-  _caixaPerguntaState createState() => _caixaPerguntaState();
+  State<CaixaPergunta> createState() => _CaixaPerguntaState();
 }
 
-class _caixaPerguntaState extends State<caixaPergunta> {
+class _CaixaPerguntaState extends State<CaixaPergunta> {
   String resposta = "";
   late Color corAtual;
 
@@ -29,7 +29,7 @@ class _caixaPerguntaState extends State<caixaPergunta> {
   }
 
   @override
-  void didUpdateWidget(caixaPergunta oldWidget) {
+  void didUpdateWidget(CaixaPergunta oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.cor != widget.cor) {
       setState(() {

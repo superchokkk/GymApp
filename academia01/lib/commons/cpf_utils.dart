@@ -1,4 +1,4 @@
-class cpfUtils {
+class CpfUtils {
 
   //"12345678901" -> "123.456.789-01"
   static String formatador(String cpf) {

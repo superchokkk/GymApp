@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import
 export 'package:flutter/material.dart';
-export 'colorScheme.dart';
+export 'color_scheme.dart';
 export 'assets.dart';
-export 'caixaPergunta.dart';
-export 'cpfUtils.dart';
+export 'caixa_pergunta.dart';
+export 'cpf_utils.dart';
