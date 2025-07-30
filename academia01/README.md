@@ -223,11 +223,3 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 Desenvolvido por Samuel Spricigo
 
----
-
-<div align="center">
-  <p>⭐ Se este projeto te ajudou, considere dar uma estrela!</p>
-  
-  [![GitHub stars](https://img.shields.io/github/stars/seu-usuario/academia01.svg?style=social&label=Star)](https://github.com/seu-usuario/academia01)
-  [![GitHub forks](https://img.shields.io/github/forks/seu-usuario/academia01.svg?style=social&label=Fork)](https://github.com/seu-usuario/academia01/fork)
-</div>

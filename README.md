@@ -64,13 +64,6 @@ academia01/
 
 ### Configuração do Backend
 1. Configure as variáveis de ambiente no arquivo `.env`:
-   ```
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_USER=seu_usuario
-   DB_DATABASE=academia_db
-   SERVER_PORT=3000
-   ```
 
 2. Instale as dependências do Node.js:
    ```bash
