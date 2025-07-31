@@ -1,7 +1,11 @@
+//import 'package:flutter/widgets.dart';
+
 enum NivelUsuario {
   admin('ADMIN'),
   user('USER'),
-  professor('PROF');
+  professor('PROFESSOR'),
+  funcionario('FUNCIONARIO'),
+  master('MASTER');
 
   const NivelUsuario(this.value);
   final String value;
@@ -14,13 +18,17 @@ enum NivelUsuario {
         return NivelUsuario.user;
       case 'PROFESSOR':
         return NivelUsuario.professor;
+      case 'FUNCIONARIO':
+        return NivelUsuario.funcionario;
+      case 'MASTER':
+        return NivelUsuario.master;
       default:
-        return NivelUsuario.user; // valor padrão
+        return NivelUsuario.user;
     }
   }
 }
 
-class Pessoa {
+abstract class Pessoa {
   final int id;
   final String nome;
   final int idade;
@@ -44,34 +52,22 @@ class Pessoa {
     this.idFuncao = 0,
     this.salario = 0,
   });
-  
-  factory Pessoa.fromJson(Map<String, dynamic> json) {
-    return Pessoa(
-      id: json['id'],
-      nome: json['nome'],
-      idade: json['idade'],
-      email: json['email'],
-      cpf: json['cpf'],
-      senha: json['senha'],
-      nivel: json['nivel'] != null ? NivelUsuario.fromString(json['nivel']) : NivelUsuario.user,
-      idAcademia: json['idAcademia'] ?? 0,
-      idFuncao: json['idFuncao'] ?? 0,
-      salario: json['salario'] ?? 0.0,
-    );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'nome': nome,
-      'idade': idade,
-      'email': email,
-      'cpf': cpf,
-      'senha': senha,
-      'nivel': nivel.value,
-      'idAcademia': idAcademia,
-      'idFuncao': idFuncao,
-      'salario': salario,
-    };
+  //metodos que devem ser implementados pelas filhas
+  Map<String, dynamic> toJson();
+  
+  //metodos que podem ser sobrescritos
+  String get tipoUsuario => nivel.value;
+
+  bool get podeAcessarAcademia => true;
+
+  bool get podeGerenciarAlunos {
+    return nivel == NivelUsuario.admin || 
+           nivel == NivelUsuario.master || 
+           nivel == NivelUsuario.professor;
+  }
+  
+  bool get podeGerenciarFuncionarios {
+    return nivel == NivelUsuario.admin || nivel == NivelUsuario.master;
   }
 }

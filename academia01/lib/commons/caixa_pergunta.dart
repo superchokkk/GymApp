@@ -4,14 +4,14 @@ class CaixaPergunta extends StatefulWidget {
   final Color cor;
   final void Function(String) onValueChanged;
   final String labelText;
-  final bool Function(String) validador;
+  final bool obscureText;
 
   const CaixaPergunta({
     super.key,
     required this.cor,
     required this.onValueChanged,
     required this.labelText,
-    required this.validador,
+    this.obscureText = false,
   });
 
   @override
@@ -41,20 +41,21 @@ class _CaixaPerguntaState extends State<CaixaPergunta> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      obscureText: widget.obscureText,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        labelStyle: TextStyle(color: corAtual),
-        focusedBorder: OutlineInputBorder(
+        labelStyle: TextStyle(color: corAtual.withOpacity(0.6)),
+        focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: corAtual, width: 2.0),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: corAtual, width: 1.0),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: corAtual.withOpacity(1), width: 2.0),
         ),
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: corAtual),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: corAtual.withOpacity(0.6)),
         ),
       ),
-      style: TextStyle(color: corAtual),
+      style: TextStyle(color: corAtual.withOpacity(0.8)),
       cursorColor: corAtual,
       onChanged: (value) {
         setState(() {

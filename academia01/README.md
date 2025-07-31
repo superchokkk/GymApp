@@ -87,17 +87,6 @@ npm init -y
 npm install express mysql2 cors dotenv
 ```
 
-3. **Configure as variáveis de ambiente**
-```bash
-# Crie um arquivo .env com as seguintes variáveis:
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=seu_usuario
-DB_PASSWORD=sua_senha
-DB_DATABASE=academia_db
-SERVER_PORT=8080
-```
-
 4. **Execute o servidor**
 ```bash
 node backend_server.js

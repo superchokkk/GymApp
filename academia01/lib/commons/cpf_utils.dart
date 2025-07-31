@@ -17,8 +17,8 @@ class CpfUtils {
 
   static bool isValidCpf(String cpf) {
     cpf = desformatador(cpf);
-    
-    if (cpf.length != 11) {
+
+    if (cpf.isEmpty || cpf.length != 11 || cpf.trim().isEmpty) {
       return false;
     }
     return true;

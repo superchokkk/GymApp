@@ -35,7 +35,26 @@ class Aluno extends Pessoa{
       'email': email,
       'cpf': cpf,
       'senha': senha,
+      'nivel': nivel.value,
       'idAcademia': idAcademia,
     };
+  }
+
+  //metodos modificados do pai
+  @override
+  bool get podeGerenciarAlunos => false;
+  @override
+  bool get podeGerenciarFuncionarios => false;
+  @override
+  String get tipoUsuario => 'Aluno';
+
+  //metodos especificos do Aluno
+  bool get podeAcessarTreinos => true;
+  bool get podeFazerMatricula => true;
+  String get statusMatricula => idAcademia > 0 ? 'Matriculado' : 'Sem matrícula';
+
+  // Método para verificar se pode acessar uma academia específica
+  bool podeAcessarAcademiaEspecifica(int idAcademiaVerificar) {
+    return idAcademia == idAcademiaVerificar;
   }
 }

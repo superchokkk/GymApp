@@ -54,7 +54,7 @@ app.get('/api/cliente/cpf/:cpf', (req, res) => {
   `;
   
   const queryProfessor = `
-    SELECT a.idfuncao, a.idSalario
+    SELECT a.idfuncao, a.salario
     FROM pessoas as b 
     INNER JOIN funcionarios as a ON b.id = a.id
     WHERE b.cpf = ?
@@ -96,7 +96,7 @@ app.get('/api/cliente/cpf/:cpf', (req, res) => {
         });
       });
       
-    } else if (cliente.nivel === 'PROF') {
+    } else if (cliente.nivel === 'PROFESSOR' || cliente.nivel === 'FUNCIONARIO') {
       db.query(queryProfessor, [cpf], (err, professorResults) => {
         if (err) {
           console.error('Erro na query do funcionário:', err);
@@ -114,8 +114,8 @@ app.get('/api/cliente/cpf/:cpf', (req, res) => {
           senha: cliente.senha,
           nivel: cliente.nivel,
           idAcademia: null,
-          idfuncao: professor.idfuncao || null,
-          salario: professor.salario || null
+          idfuncao: professor.idfuncao,
+          salario: professor.salario
         });
       });
       
