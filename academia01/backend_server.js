@@ -1,8 +1,10 @@
 // backend_server.js (Node.js)
-require('dotenv').config();
-const express = require('express');
-const mysql = require('mysql2');
-const cors = require('cors');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import mysql from 'mysql2';
+import cors from 'cors';
+import { sendCodigoEmail } from './lib/services/email.js';
 
 // Verificar se todas as variáveis de ambiente necessárias estão definidas
 const requiredEnvVars = ['DB_HOST', 'DB_PORT', 'DB_USER', 'DB_DATABASE', 'SERVER_PORT'];
@@ -177,6 +179,18 @@ app.get('/api/academias', (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
+});
+
+//POST /api/send_email (emailDestinatario, codigo)
+app.post('/api/send_email/:email/:codigo', async (req, res) => {
+  const { email, codigo } = req.params;
+
+  const sendEmailSuccess = await sendCodigoEmail(email, codigo);
+  if (sendEmailSuccess) {
+    res.json({ success: true });
+  } else {
+    res.status(500).json({ success: false });
+  }
 });
 
 const PORT = process.env.SERVER_PORT || 8080;

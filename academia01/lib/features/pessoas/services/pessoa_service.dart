@@ -51,6 +51,23 @@ class PessoaService {
     }
   }
 
+  //envia email
+  static Future<bool> sendEmail(String email, String codigo) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/send_email/$email/$codigo'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   static void _adicionarAoCache(Pessoa pessoa) {
     _pessoasCache.removeWhere((p) => p.cpf == pessoa.cpf);
     _pessoasCache.add(pessoa);

@@ -9,3 +9,4 @@ export '../../features/pessoas/factory/pessoa_factory.dart';
 export '../home/home_page.dart';
 export 'ask_senha.dart';
 export 'ask_cpf.dart';
+export 'ask_codigo.dart';

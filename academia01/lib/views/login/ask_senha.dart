@@ -21,6 +21,45 @@ class _AskSenhaState extends State<AskSenha> {
     );
   }
 
+  String? codigoRecuperacao;
+  String gerarCodigo() {
+    final random = DateTime.now().millisecondsSinceEpoch;
+    return (random % 1000000).toString().padLeft(6, '0');
+  }
+
+  Future<void> enviarEmail(String email, String codigo) async {
+    try {
+      bool enviado = await PessoaService.sendEmail(email, codigo);
+      if (enviado) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('E-mail enviado com sucesso!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Falha ao enviar e-mail.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro: $e')),
+      );
+    }
+  }
+
+  void esqueciSenha() async {
+    setState(() { isLoading = true; });
+    final codigo = gerarCodigo();
+    codigoRecuperacao = codigo;
+    await enviarEmail(widget.user.email, codigo);
+    setState(() { isLoading = false; });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AskCodigo(user: widget.user, codigo: codigo),
+      ),
+    );
+  }
+
   void changeVisibility() {
     setState(() {
       isVisible = !isVisible;
@@ -159,24 +198,22 @@ class _AskSenhaState extends State<AskSenha> {
                 width: cellWidth * 19,
                 height: cellHeight * 3,
                 child: ElevatedButton(
-                  onPressed: backButton,
+                  onPressed: isLoading ? null : esqueciSenha,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConst.second,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
-
-                  child:
-                      isLoading
-                          ? CircularProgressIndicator(color: ColorConst.third)
-                          : Text(
-                            "Esqueci a senha",
-                            style: TextStyle(
-                              color: ColorConst.first.withOpacity(0.7),
-                              fontSize: 12,
-                            ),
+                  child: isLoading
+                      ? CircularProgressIndicator(color: ColorConst.third)
+                      : Text(
+                          "Esqueci a senha",
+                          style: TextStyle(
+                            color: ColorConst.first.withOpacity(0.7),
+                            fontSize: 12,
                           ),
+                        ),
                 ),
               ),
 

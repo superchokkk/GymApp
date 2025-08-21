@@ -18,7 +18,10 @@ class ApiService {
   }
 
   // POST - Inserir dados
-  Future<Map<String, dynamic>> post(String endpoint, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> post(
+    String endpoint,
+    Map<String, dynamic> data,
+  ) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/$endpoint'),
@@ -35,7 +38,10 @@ class ApiService {
   }
 
   // PUT - Atualizar dados
-  Future<Map<String, dynamic>> put(String endpoint, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> put(
+    String endpoint,
+    Map<String, dynamic> data,
+  ) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/$endpoint'),
