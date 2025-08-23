@@ -10,7 +10,6 @@ class AskSenha extends StatefulWidget {
 
 class _AskSenhaState extends State<AskSenha> {
   String userSenha = "";
-  bool isLoading = false;
   Color corPergunta = ColorConst.first;
   bool isVisible = true;
 
@@ -40,18 +39,16 @@ class _AskSenhaState extends State<AskSenha> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erro: $e')));
     }
   }
 
   void esqueciSenha() async {
-    setState(() { isLoading = true; });
     final codigo = gerarCodigo();
     codigoRecuperacao = codigo;
     await enviarEmail(widget.user.email, codigo);
-    setState(() { isLoading = false; });
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -75,10 +72,6 @@ class _AskSenhaState extends State<AskSenha> {
         corPergunta = Colors.red;
       });
     } else if (userSenha == widget.user.senha) {
-      setState(() {
-        isLoading = true;
-      });
-
       Pessoa cliente = widget.user;
       Navigator.pushReplacement(
         context,
@@ -124,14 +117,7 @@ class _AskSenhaState extends State<AskSenha> {
                     padding: EdgeInsets.zero,
                   ),
 
-                  child:
-                      isLoading
-                          ? CircularProgressIndicator(color: ColorConst.third)
-                          : Icon(
-                            Icons.close,
-                            color: ColorConst.third,
-                            size: 30,
-                          ),
+                  child: Icon(Icons.close, color: ColorConst.third, size: 30),
                 ),
               ),
 
@@ -183,13 +169,13 @@ class _AskSenhaState extends State<AskSenha> {
                     shape: const CircleBorder(),
                     padding: EdgeInsets.zero,
                   ),
-                  child: isLoading
-                      ? CircularProgressIndicator(color: ColorConst.third)
-                      : Icon(
-                          isVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                          color: ColorConst.first,
-                          size: 30,
-                        ),
+                  child: Icon(
+                    isVisible
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: ColorConst.first,
+                    size: 30,
+                  ),
                 ),
               ),
 
@@ -199,22 +185,20 @@ class _AskSenhaState extends State<AskSenha> {
                 width: cellWidth * 19,
                 height: cellHeight * 3,
                 child: ElevatedButton(
-                  onPressed: isLoading ? null : esqueciSenha,
+                  onPressed: esqueciSenha,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorConst.second,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
-                  child: isLoading
-                      ? CircularProgressIndicator(color: ColorConst.third)
-                      : Text(
-                          "Esqueci a senha",
-                          style: TextStyle(
-                            color: ColorConst.first.withOpacity(0.7),
-                            fontSize: 12,
-                          ),
-                        ),
+                  child: Text(
+                    "Esqueci a senha",
+                    style: TextStyle(
+                      color: ColorConst.first.withOpacity(0.7),
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
 
@@ -232,16 +216,10 @@ class _AskSenhaState extends State<AskSenha> {
                     ),
                   ),
 
-                  child:
-                      isLoading
-                          ? CircularProgressIndicator(color: ColorConst.third)
-                          : Text(
-                            "Continuar",
-                            style: TextStyle(
-                              color: ColorConst.third,
-                              fontSize: 20,
-                            ),
-                          ),
+                  child: Text(
+                    "Continuar",
+                    style: TextStyle(color: ColorConst.third, fontSize: 20),
+                  ),
                 ),
               ),
             ],

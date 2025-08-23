@@ -13,6 +13,13 @@ class _AskCodigoState extends State<AskCodigo> {
   String codigoDigitado = "";
   Color corPergunta = ColorConst.first;
 
+  void backButton() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => AskSenha(user: widget.user)),
+    );
+  }
+
   void validarCodigo() {
     if (codigoDigitado == widget.codigo) {
       // Código correto, pode redirecionar para redefinir senha ou home
@@ -21,9 +28,9 @@ class _AskCodigoState extends State<AskCodigo> {
         MaterialPageRoute(builder: (context) => HomePage(user: widget.user)),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Código incorreto')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Código incorreto')));
       setState(() {
         corPergunta = Colors.red;
       });
@@ -45,6 +52,27 @@ class _AskCodigoState extends State<AskCodigo> {
         child: SafeArea(
           child: Stack(
             children: [
+              Positioned(
+                left: cellWidth * 5,
+                top: cellHeight * 7,
+                width: cellWidth * 4,
+                height: cellHeight * 4,
+                child: ElevatedButton(
+                  onPressed: backButton,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorConst.first,
+                    shape: const CircleBorder(),
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  child: Icon(
+                    Icons.close,
+                    color: ColorConst.third,
+                    size: 30,
+                  ),
+                ),
+              ),
+
               Positioned(
                 left: cellWidth * 17,
                 top: cellHeight * 17,
@@ -94,10 +122,7 @@ class _AskCodigoState extends State<AskCodigo> {
                   ),
                   child: Text(
                     "Validar",
-                    style: TextStyle(
-                      color: ColorConst.third,
-                      fontSize: 20,
-                    ),
+                    style: TextStyle(color: ColorConst.third, fontSize: 20),
                   ),
                 ),
               ),
