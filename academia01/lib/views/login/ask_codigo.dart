@@ -75,6 +75,7 @@ class _AskCodigoState extends State<AskCodigo> {
                     },
                     labelText: 'Digite o código recebido:',
                     obscureText: false,
+                    formatarCpf: false,
                   ),
                 ),
               ),

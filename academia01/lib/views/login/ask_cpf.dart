@@ -113,6 +113,7 @@ class _AskCpfState extends State<AskCpf> {
                       });
                     },
                     labelText: 'cpf: 123.456.789-00',
+                    formatarCpf: true,
                   ),
                 ),
               ),
