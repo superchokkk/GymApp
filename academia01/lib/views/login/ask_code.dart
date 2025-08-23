@@ -25,7 +25,7 @@ class _AskCodigoState extends State<AskCodigo> {
       // Código correto, pode redirecionar para redefinir senha ou home
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(user: widget.user)),
+        MaterialPageRoute(builder: (context) => RedefinePassword(user: widget.user)),
       );
     } else {
       ScaffoldMessenger.of(
@@ -103,7 +103,7 @@ class _AskCodigoState extends State<AskCodigo> {
                     },
                     labelText: 'Digite o código recebido:',
                     obscureText: false,
-                    formatarCpf: false,
+                    formatador: false,
                   ),
                 ),
               ),

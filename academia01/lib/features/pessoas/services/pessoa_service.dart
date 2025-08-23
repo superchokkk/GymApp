@@ -10,6 +10,10 @@ class PessoaService {
   static List<Pessoa> _pessoasCache = [];
 
   static Future<Pessoa?> buscarPessoaPorCpf(String cpf) async {
+    /*var aux = buscarNoCachePorCpf(cpf);
+    if (aux != null) {
+      return aux;
+    }*/
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/cliente/cpf/$cpf'),
@@ -36,7 +40,7 @@ class PessoaService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/aluno/cpf/$cpf'),
-        headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json'},
       );
 
       if (response.statusCode == 200) {
@@ -55,8 +59,9 @@ class PessoaService {
   static Future<bool> sendEmail(String email, String codigo) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/send_email/$email/$codigo'),
+        Uri.parse('$baseUrl/send_email'),
         headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': email, 'codigo': codigo}),
       );
 
       if (response.statusCode == 200) {
@@ -68,19 +73,29 @@ class PessoaService {
     }
   }
 
+  static Future<bool> redefinePassword(String novaSenha, int id) async{
+    try{
+      final response = await http.patch(
+        Uri.parse('$baseUrl/redefine_password'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'novaSenha': novaSenha, 'id': id}),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    }catch(e){
+      return false;
+    }
+  }
+
   static void _adicionarAoCache(Pessoa pessoa) {
     _pessoasCache.removeWhere((p) => p.cpf == pessoa.cpf);
     _pessoasCache.add(pessoa);
   }
 
-  // Limpar cache
   static void limparCache() {
     _pessoasCache.clear();
-  }
-
-  // Obter cache completo
-  static List<Pessoa> obterCacheCompleto() {
-    return List.unmodifiable(_pessoasCache);
   }
 
   // Buscar no cache por CPF

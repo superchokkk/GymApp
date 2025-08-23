@@ -44,8 +44,7 @@ class _AskCpfState extends State<AskCpf> {
       }
       Pessoa user = cliente;
       if (!mounted) return;
-
-      //mudar tela (senha, levando o user)
+      print(user.senha);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AskSenha(user: user)),
@@ -113,7 +112,7 @@ class _AskCpfState extends State<AskCpf> {
                       });
                     },
                     labelText: 'cpf: 123.456.789-00',
-                    formatarCpf: true,
+                    formatador: true,
                   ),
                 ),
               ),

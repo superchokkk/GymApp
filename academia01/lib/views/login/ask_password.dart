@@ -152,7 +152,7 @@ class _AskSenhaState extends State<AskSenha> {
                     },
                     labelText: 'Senha:',
                     obscureText: !isVisible,
-                    formatarCpf: false,
+                    formatador: false,
                   ),
                 ),
               ),

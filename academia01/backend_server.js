@@ -182,8 +182,8 @@ app.get('/api/academias', (req, res) => {
 });
 
 //POST /api/send_email (emailDestinatario, codigo)
-app.post('/api/send_email/:email/:codigo', async (req, res) => {
-  const { email, codigo } = req.params;
+app.post('/api/send_email', async (req, res) => {
+  const { email, codigo } = req.body;
 
   const sendEmailSuccess = await sendCodigoEmail(email, codigo);
   if (sendEmailSuccess) {
@@ -191,6 +191,20 @@ app.post('/api/send_email/:email/:codigo', async (req, res) => {
   } else {
     res.status(500).json({ success: false });
   }
+});
+
+//PATCH /api/redefine_password (novaSenha, id)
+app.patch('/api/redefine_password', (req, res) => {
+  const { novaSenha, id } = req.body;
+
+  const query = 'UPDATE pessoas SET senha = ? WHERE id = ?';
+  db.query(query, [novaSenha, id], (err, results) => {
+    if (err) {
+      console.error('Erro na query:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ success: true });
+  });
 });
 
 const PORT = process.env.SERVER_PORT || 8080;

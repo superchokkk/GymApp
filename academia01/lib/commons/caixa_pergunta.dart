@@ -5,7 +5,7 @@ class CaixaPergunta extends StatefulWidget {
   final void Function(String) onValueChanged;
   final String labelText;
   final bool obscureText;
-  final bool formatarCpf;
+  final bool formatador;
 
   const CaixaPergunta({
     super.key,
@@ -13,13 +13,12 @@ class CaixaPergunta extends StatefulWidget {
     required this.onValueChanged,
     required this.labelText,
     this.obscureText = false,
-    this.formatarCpf = false,
+    this.formatador = false,
   });
 
   @override
   State<CaixaPergunta> createState() => _CaixaPerguntaState();
 }
-
 
 class _CaixaPerguntaState extends State<CaixaPergunta> {
   String resposta = "";
@@ -44,7 +43,6 @@ class _CaixaPerguntaState extends State<CaixaPergunta> {
   }
 
   String formatCpf(String value) {
-    // Remove tudo que não é número
     var digits = value.replaceAll(RegExp(r'\D'), '');
     if (digits.length > 11) digits = digits.substring(0, 11);
     var formatted = '';
@@ -54,6 +52,22 @@ class _CaixaPerguntaState extends State<CaixaPergunta> {
       if (i == 8) formatted += '-';
     }
     return formatted;
+  }
+
+  int _calculateCursorPosition(String oldText, String newText, int oldCursorPosition) {
+    String digitsBeforeCursor = oldText.substring(0, oldCursorPosition).replaceAll(RegExp(r'\D'), '');
+    int digitCount = digitsBeforeCursor.length;
+    int newPosition = 0;
+    int digitsFound = 0;
+    
+    for (int i = 0; i < newText.length && digitsFound < digitCount; i++) {
+      if (RegExp(r'\d').hasMatch(newText[i])) {
+        digitsFound++;
+      }
+      newPosition = i + 1;
+    }
+    
+    return newPosition.clamp(0, newText.length);
   }
 
   @override
@@ -79,12 +93,17 @@ class _CaixaPerguntaState extends State<CaixaPergunta> {
       keyboardType: TextInputType.number,
       onChanged: (value) {
         String result = value;
-        if (widget.formatarCpf) {
+        if (widget.formatador) {
+          String oldText = _controller.text;
+          int oldCursorPosition = _controller.selection.baseOffset;
+          
           String formatted = formatCpf(value);
+          
           if (formatted != value) {
+            int newCursorPosition = _calculateCursorPosition(oldText, formatted, oldCursorPosition);
             _controller.value = TextEditingValue(
               text: formatted,
-              selection: TextSelection.collapsed(offset: formatted.length),
+              selection: TextSelection.collapsed(offset: newCursorPosition),
             );
           }
           result = formatted;
