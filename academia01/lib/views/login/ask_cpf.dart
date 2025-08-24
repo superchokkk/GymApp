@@ -11,6 +11,7 @@ class _AskCpfState extends State<AskCpf> {
   String userCpf = "";
   bool isLoading = false;
   Color corPergunta = ColorConst.first;
+  final encriptador = Encriptador();
 
   void onPressed() async {
     String cpfLimpo = CpfUtils.desformatador(userCpf);
@@ -29,7 +30,8 @@ class _AskCpfState extends State<AskCpf> {
     });
 
     try {
-      final cliente = await PessoaService.buscarPessoaPorCpf(cpfLimpo);
+      String cpf = encriptador.encriptar(cpfLimpo);
+      final cliente = await PessoaService.buscarPessoaPorCpf(cpf);
 
       if (!mounted) return;
 

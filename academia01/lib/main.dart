@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'views/splash_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   // Garantir que o Flutter está inicializado
   WidgetsFlutterBinding.ensureInitialized();
-  
+  await dotenv.load();
   runApp(const MyApp());
 }
 

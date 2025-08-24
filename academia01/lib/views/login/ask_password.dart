@@ -12,6 +12,7 @@ class _AskSenhaState extends State<AskSenha> {
   String userSenha = "";
   Color corPergunta = ColorConst.first;
   bool isVisible = true;
+  final enc = Encriptador();
 
   void backButton() {
     Navigator.pushReplacement(
@@ -28,7 +29,7 @@ class _AskSenhaState extends State<AskSenha> {
 
   Future<void> enviarEmail(String email, String codigo) async {
     try {
-      bool enviado = await PessoaService.sendEmail(email, codigo);
+      bool enviado = await PessoaService.sendEmail(enc.desencriptar(email), codigo);
       if (enviado) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('E-mail enviado com sucesso!')),
@@ -64,14 +65,15 @@ class _AskSenhaState extends State<AskSenha> {
   }
 
   void onPressed() async {
-    if (userSenha.isEmpty) {
+    String senhaAux = enc.encriptar(userSenha);
+    if (senhaAux.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Por favor, digite uma senha')),
       );
       setState(() {
         corPergunta = Colors.red;
       });
-    } else if (userSenha == widget.user.senha) {
+    } else if (senhaAux == widget.user.senha) {
       Pessoa cliente = widget.user;
       Navigator.pushReplacement(
         context,

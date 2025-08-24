@@ -13,6 +13,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   String _userSenha = '';
   String _confirmarSenha = '';
   bool isVisible = true;
+  final enc = Encriptador();
 
   void changeVisibility() {
     setState(() {
@@ -43,7 +44,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
         const SnackBar(content: Text('As senhas não coincidem')),
       );
     } else{
-      if(await PessoaService.redefinePassword(_userSenha, widget.user.id)) {
+      if(await PessoaService.redefinePassword(enc.encriptar(_userSenha), widget.user.id)) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

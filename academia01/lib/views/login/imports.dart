@@ -6,6 +6,7 @@ export '../../features/pessoas/funcionarios/models/funcionario_model.dart';
 export '../../features/pessoas/funcionarios/models/professor_model.dart';
 export '../../features/pessoas/admin/model/admin_model.dart';
 export '../../features/pessoas/factory/pessoa_factory.dart';
+export '../../encrip.dart';
 export '../home/home_page.dart';
 export 'ask_password.dart';
 export 'ask_cpf.dart';
