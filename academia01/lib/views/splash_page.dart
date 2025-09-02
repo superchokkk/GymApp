@@ -1,5 +1,4 @@
-import '../commons/imports.dart';
-import 'login/ask_cpf.dart';
+import '../../imports.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

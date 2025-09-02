@@ -1,4 +1,4 @@
-import 'imports.dart';
+import '../../imports.dart';
 
 class AskSenha extends StatefulWidget {
   final Pessoa user;

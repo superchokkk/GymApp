@@ -1,4 +1,4 @@
-import 'imports.dart';
+import '../../imports.dart';
 
 class RedefinePassword extends StatefulWidget {
   final Pessoa user;
