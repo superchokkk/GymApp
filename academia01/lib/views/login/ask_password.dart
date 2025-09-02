@@ -77,7 +77,7 @@ class _AskSenhaState extends State<AskSenha> {
       Pessoa cliente = widget.user;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(user: cliente)),
+        MaterialPageRoute(builder: (context) => MainScreen(user: cliente)),
       );
     } else {
       ScaffoldMessenger.of(

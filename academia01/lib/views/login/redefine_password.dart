@@ -48,7 +48,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(user: widget.user)
+            builder: (context) => MainScreen(user: widget.user)
           )
         );
       } else {
