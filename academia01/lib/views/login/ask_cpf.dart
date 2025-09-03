@@ -8,7 +8,7 @@ class AskCpf extends StatefulWidget {
 }
 
 class _AskCpfState extends State<AskCpf> {
-  String userCpf = "";
+  String userCpf = "12345678910";
   bool isLoading = false;
   Color corPergunta = ColorConst.first;
   final encriptador = Encriptador();
@@ -46,7 +46,6 @@ class _AskCpfState extends State<AskCpf> {
       }
       Pessoa user = cliente;
       if (!mounted) return;
-      print(user.senha);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AskSenha(user: user)),

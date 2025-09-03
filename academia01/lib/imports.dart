@@ -1,11 +1,5 @@
-export '../../commons/imports.dart';
-export '../../features/pessoas/services/pessoa_service.dart';
-export '../../features/pessoas/model/pessoa.dart';
-export '../../features/pessoas/alunos/models/aluno.dart';
-export '../../features/pessoas/funcionarios/models/funcionario_model.dart';
-export '../../features/pessoas/funcionarios/models/professor_model.dart';
-export '../../features/pessoas/admin/model/admin_model.dart';
-export '../../features/pessoas/factory/pessoa_factory.dart';
+export 'commons/export.dart';
+export 'features/pessoas/export.dart';
 export '../../encrip.dart';
 export 'views/login/ask_code.dart';
 export 'views/login/ask_cpf.dart';

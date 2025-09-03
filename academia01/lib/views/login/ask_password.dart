@@ -9,7 +9,7 @@ class AskSenha extends StatefulWidget {
 }
 
 class _AskSenhaState extends State<AskSenha> {
-  String userSenha = "";
+  String userSenha = "123456";
   Color corPergunta = ColorConst.first;
   bool isVisible = true;
   final enc = Encriptador();
